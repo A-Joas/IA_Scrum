@@ -23,12 +23,15 @@ import java.awt.Toolkit;
 import javax.swing.JEditorPane;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-
+import java.util.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Primeira_tela extends JFrame {
 
 	private JPanel Painel;
 	private JTextField txtDigiteSeuNome;
+
 	
 	
 	
@@ -46,13 +49,9 @@ public class Primeira_tela extends JFrame {
 		});
 	}
 
-	/**
-	 * Criar a janela
-	 */
 	public Primeira_tela() {
 		setResizable(false);
-		
-		
+		Tela_Tutorial Tutorial = new Tela_Tutorial();
 		setTitle("Jogo Med Educ");
 		setBackground(SystemColor.window);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,28 +61,50 @@ public class Primeira_tela extends JFrame {
 		Painel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(Painel);
 		Painel.setLayout(null);
-		
-		
-		
-		
 		txtDigiteSeuNome = new JTextField();
+		txtDigiteSeuNome.addKeyListener(new KeyAdapter() {
+			
+			public void keyPressed(KeyEvent evt) {
+				if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+					int resposta = 2;
+					if (txtDigiteSeuNome.getText().length() == 0)
+						JOptionPane.showMessageDialog(null, "Nome invalido, Tente outro!");
+					else
+						resposta = JOptionPane.showConfirmDialog(null, "Você está prestes a entrar no jogo com o nome de '"+txtDigiteSeuNome.getText()+"' Confirmar?","Seu nome no jogo", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+						if (resposta == JOptionPane.YES_OPTION ) {
+							Tela_Jogo jogo = new Tela_Jogo(txtDigiteSeuNome.getText());
+								jogo.setVisible(true);
+								dispose();}
+				}
+			}
+		});
 		txtDigiteSeuNome.setHorizontalAlignment(SwingConstants.LEFT);
 		txtDigiteSeuNome.setBounds(151, 459, 240, 20);
 		txtDigiteSeuNome.setToolTipText("");
 		Painel.add(txtDigiteSeuNome);
 		txtDigiteSeuNome.setColumns(10);
+
+		
 		
 		JButton btnNewButton = new JButton("VAI!");
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				
+				int resposta = 2;
 				if (txtDigiteSeuNome.getText().length() == 0)
 					JOptionPane.showMessageDialog(null, "Nome invalido, Tente outro!");
 				else
-					JOptionPane.showConfirmDialog(null, "Você está prestes a entrar no jogo com o nome de '"+txtDigiteSeuNome.getText()+"' Confirmar?","Seu nome no jogo", JOptionPane.YES_NO_OPTION);
+					resposta = JOptionPane.showConfirmDialog(null, "Você está prestes a entrar no jogo com o nome de '"+txtDigiteSeuNome.getText()+"' Confirmar?","Seu nome no jogo", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+					if (resposta == JOptionPane.YES_OPTION ) {
+						Tela_Jogo jogo = new Tela_Jogo(txtDigiteSeuNome.getText());
+							jogo.setVisible(true);
+							dispose();}
 					
 			}
+			
 		});
+		
+		
 		btnNewButton.setBounds(392, 456, 69, 27);
 		Painel.add(btnNewButton);
 		JLabel lblBemVindoAo = new JLabel("Bem vindo ao MedEduc");
@@ -92,7 +113,13 @@ public class Primeira_tela extends JFrame {
 		Painel.add(lblBemVindoAo);
 		
 		JButton btnTutorial = new JButton("Tutorial");
-		btnTutorial.setBounds(224, 484, 89, 23);
+		btnTutorial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Tutorial.setVisible(true);
+				
+			}
+		});
+		btnTutorial.setBounds(289, 484, 89, 23);
 		Painel.add(btnTutorial);
 		
 		
@@ -103,16 +130,36 @@ public class Primeira_tela extends JFrame {
 		Painel.add(lblDigiteAquiSeu);
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\user\\eclipse-workspace\\InterfaceJogoIA\\src\\view\\fundo.jpg"));
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\user\\Desktop\\fundo.jpg"));
 		lblNewLabel.setBounds(0, 0, 548, 496);
 		Painel.add(lblNewLabel);
+		
+		JButton btnNewButton_1 = new JButton("Voltar");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Inicio frame = new Inicio();
+				frame.setVisible(true);
+				dispose();
+			}
+		});
+		btnNewButton_1.setBounds(190, 484, 89, 23);
+		Painel.add(btnNewButton_1);
+		
 	}
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "SwingAction");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-		}
+	
+	
+	
+	public String Nome( String nome ) {
+		
+		
+		return nome;
+		
+		
 	}
+	
+	
+	
+	
+	
+
 }
